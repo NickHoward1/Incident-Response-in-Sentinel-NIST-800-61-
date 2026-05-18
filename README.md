@@ -17,6 +17,20 @@
 
 <h2>Virtual Machine Brute Force Detection</h2>
 
+<h3>Creating An Alert</h3>
+
+`DeviceLogonEvents
+| where TimeGenerated >= ago(5h)
+| where ActionType == "LogonFailed"
+| summarize NumberOfFailures = count() by RemoteIP, ActionType, DeviceName 
+| where  NumberOfFailures >= 10`
+
+<b>Process:</b> `Microsoft Sentinel - Configuration - Analytics - Create (Scheduled Query Rule) - Fill In General - Set Rule Logic (paste query created in log analytic workspace, shown above) - Select Entity Mapping (See screenshot below) - 
+
+
+
+
+
 <h2>PowerShell Suspicious Web Request</h2>
 
 <h2>Potential Impossible Travel</h2>
