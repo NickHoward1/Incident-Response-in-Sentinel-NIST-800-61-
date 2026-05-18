@@ -28,7 +28,7 @@
 <b>Process:</b> `Microsoft Sentinel - Configuration - Analytics - Create (Scheduled Query Rule) - Fill In General - Set Rule Logic (paste query created in log analytic workspace, shown above) - Select Entity Mapping (See screenshot below) - 
 
 <p>
-<img src= "" width="300" height="300"/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<img src= "https://github.com/NickHoward1/Incident-Response-in-Sentinel-NIST-800-61-/blob/b12acecd47cb5a35458f083a95eb1f7ad48321e2/Screenshot%202026-05-18%20at%2009.44.36.png" width="300" height="300"/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <img src= "" width="300" height="300"/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src= "" width="300" height="300" /> 
 </p>
 
