@@ -33,8 +33,18 @@
 </p>
 
 <b>Screenshot1:</b> Shows me creating the alert using the KQL query that was tested in the log workspace analytics.<br>
-<b>Screenshot2:</b> Shows the alert has been triggered as an incident under Threat Management.
-<b>Screenshot3:</b>
+<b>Screenshot2:</b> Shows the alert has been triggered as an incident under Threat Management.<br>
+<b>Screenshot3:</b> Shows the investigation map breaking down all the Public IP address that attemped a Brute Force Attack, as well as the targeted Hosts. To obtain this map, I assigned the alert to myself and changed the status to active. *Important to write these note down the IP & targeted host addresses. 
+
+In a real-world scenario, If the login was sucessfull, I would immediately isolate the affected host or device to help prevent lateral movement and stop any malware or ransomware that may have already been executed from spreading further across the environment. I would also initiate an anti-virus or endpoint scan as part of the containment process.
+
+Using Microsoft Defender for Endpoint, I would navigate to the affected device under the Assets/Devices section and apply device isolation and containment actions before escalating the incident to a senior SOC analyst for further investigation and remediation activities.
+
+To check to see if the brute force attempt was successful use the KQL query below, if nothing shows the attempt was unsucessful. 
+
+`DeviceLogonEvents
+| where RemoteIP in ("185.156.73.169")
+| where ActionType != "LogonFailed"`
 
 
 <h2>PowerShell Suspicious Web Request</h2>
