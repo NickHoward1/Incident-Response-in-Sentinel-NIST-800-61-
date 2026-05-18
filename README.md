@@ -40,12 +40,17 @@ In a real-world scenario, If the login was sucessfull, I would immediately isola
 
 Using Microsoft Defender for Endpoint, I would navigate to the affected device under the Assets/Devices section and apply device isolation and containment actions before escalating the incident to a senior SOC analyst for further investigation and remediation activities.
 
-To check to see if the brute force attempt was successful use the KQL query below, if nothing shows the attempt was unsucessful. 
+To see if the brute force attempt was successful use the KQL query below, if nothing shows the attempt was unsucessful. 
 
 `DeviceLogonEvents
 | where RemoteIP in ("185.156.73.169")
 | where ActionType != "LogonFailed"`
 
+In some cases I would have to create a Network Security Group Rule in Azure in response to the brute force attack. Attackers scan for open RDP's so they can carry out repeated RDP attempts on port 3389 or SSH brute force on port 22. Process to create the rule below...
+
+<b>Process:</b> `Azure - Network Security Group - Create Port Rule.`
+
+For the final step of the Incident Response you want to declare your findings, you do this by - <b>Process:</b> `Sentinel - Incidents - Search for Incident - Select Incident - View Full Details - Select Activity Log - Post Comment`
 
 <h2>PowerShell Suspicious Web Request</h2>
 
