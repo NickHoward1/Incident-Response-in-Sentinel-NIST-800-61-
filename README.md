@@ -54,6 +54,22 @@ For the final step of the Incident Response you want to declare your findings, y
 
 <h2>PowerShell Suspicious Web Request</h2>
 
+<h3>Creating An Alert</h3>
+
+`let TargetHostname = "nicks-vm";
+DeviceProcessEvents
+| where DeviceName == TargetHostname
+| where FileName == "powershell.exe"
+| where InitiatingProcessCommandLine contains "Invoke-WebRequest"
+| order by TimeGenerated`
+
+<b>Process:</b> `Microsoft Sentinel - Configuration - Analytics - Create (Scheduled Query Rule) - Fill In General - Set Rule Logic (paste query created in log analytic workspace, shown above) - Select Entity Mapping (See screenshot below) - Review & Create`
+
+<p>
+<img src= "" width="300" height="300"/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<img src= "" width="300" height="300"/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src= "" width="300" height="300" /> 
+</p>
+
 <h2>Potential Impossible Travel</h2>
 
 <h2>Excessive Resource Creation / Deletion</h2>
