@@ -17,7 +17,7 @@
 
 <h2>Virtual Machine Brute Force Detection</h2>
 
-<h3>Creating An Alert</h3>
+<h3>Creating an Alert</h3>
 
 `DeviceLogonEvents
 | where TimeGenerated >= ago(5h)
@@ -54,7 +54,7 @@ For the final step of the Incident Response you want to declare your findings, y
 
 <h2>PowerShell Suspicious Web Request</h2>
 
-<h3>Creating An Alert</h3>
+<h3>Creating an Alert</h3>
 
 `let TargetHostname = "nicks-vm";
 DeviceProcessEvents
