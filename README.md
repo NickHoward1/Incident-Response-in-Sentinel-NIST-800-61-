@@ -89,7 +89,12 @@ DeviceProcessEvents
 
 <b>Executed:</b> see KQL query below, if there is a result, the command was executed meaning this will need to be written in the notes and passed of to the SOC2. Copy and paste the query used in the notes as well. 
 
+<b>Containment, Eradication, and Recovery:</b>  
+
 <b>Isolated:</b>  Write that the machine was isloated in MDE and a Anti Virus Scan was carried out. <b>Process:</b>  `MDE - Assets - Devices - Seach for device - Top right corner isolate & Run malware scan`
+
+<b>Close out Incident:</b> Copy and paste notes and condense them using chatGPT. Once you have done this go back to Sentinel log notes in activity log and close Incident. <b>Process:</b> `Sentinel - Threat Management - Incidents - Search for Incident - View Full Details - Activity Log - Post notes - Change Status: Closed`
+
 
  `let TargetHostname = "windows-target-1"; // Replace with the name of your target host as it shows up in the logs
 let ScriptNames = dynamic(["eicar.ps1", "portscan.ps1", "pwncrypt.ps1"]); // Add the name of the scripts that were downloaded
@@ -102,7 +107,6 @@ DeviceProcessEvents
 
 <img src= "https://github.com/NickHoward1/Incident-Response-in-Sentinel-NIST-800-61-/blob/2bfbf15eff46759ff9d5b0547001f546ebba15cf/Screenshot%202026-05-23%20at%2014.11.51.png" width="300" height="300" /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
-<b>Important:</b> In a real life scenario you would isloate the machine/host and run and malware scan, this is done in MDE check the other lab for the process. 
 
 <h2>Potential Impossible Travel</h2>
 
