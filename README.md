@@ -72,7 +72,7 @@ DeviceProcessEvents
 </p>
 
 <b>Screenshot1:</b> Shows me creating the KQL query to find the PowerShell Scripts containing the "Invoke-WebRequests".<br>
-<b>Screenshot2:</b> Shows .<br>
+<b>Screenshot2:</b> Shows me creating the detection rule so that the incident shows up in Sentinel .<br>
 <b>Screenshot3:</b> Shows me gathering information and compiling it into notes to then send off to the senior SOC Analyst. <b>Process:</b> `Sentinel - Threat Management - Incidents - Target Host - Assign Owner (Me) - Change Status: Active - View Full Details - Investigate - Copy & Paste Commands found into notes (See below)`
 
 <b>Detection & Analysis Section:</b> This is where you write notes on your findings. 
@@ -89,6 +89,8 @@ DeviceProcessEvents
 
 <b>Executed:</b> see KQL query below, if there is a result, the command was executed meaning this will need to be written in the notes and passed of to the SOC2. Copy and paste the query used in the notes as well. 
 
+<b>Isolated:</b>  Write that the machine was isloated in MDE and a Anti Virus Scan was carried out. <b>Process:</b>  `MDE - Assets - Devices - Seach for device - Top right corner isolate & Run malware scan`
+
  `let TargetHostname = "windows-target-1"; // Replace with the name of your target host as it shows up in the logs
 let ScriptNames = dynamic(["eicar.ps1", "portscan.ps1", "pwncrypt.ps1"]); // Add the name of the scripts that were downloaded
 DeviceProcessEvents
@@ -99,6 +101,8 @@ DeviceProcessEvents
 | project TimeGenerated, AccountName, DeviceName, FileName, ProcessCommandLine`
 
 <img src= "https://github.com/NickHoward1/Incident-Response-in-Sentinel-NIST-800-61-/blob/2bfbf15eff46759ff9d5b0547001f546ebba15cf/Screenshot%202026-05-23%20at%2014.11.51.png" width="300" height="300" /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+<b>Important:</b> In a real life scenario you would isloate the machine/host and run and malware scan, this is done in MDE check the other lab for the process. 
 
 <h2>Potential Impossible Travel</h2>
 
