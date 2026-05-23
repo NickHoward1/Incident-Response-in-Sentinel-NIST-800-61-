@@ -68,7 +68,7 @@ DeviceProcessEvents
 
 <p>
 <img src= "https://github.com/NickHoward1/Incident-Response-in-Sentinel-NIST-800-61-/blob/086e14fe01c709b7d4c2f85a56458f33ee0fc243/Screenshot%202026-05-23%20at%2012.01.27.png" width="300" height="300"/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<img src= "https://github.com/NickHoward1/Incident-Response-in-Sentinel-NIST-800-61-/blob/10959ae6b1ef6bdb77155da0647754de9ad061dd/Screenshot%202026-05-23%20at%2012.11.16.png" width="300" height="300"/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src= "" width="300" height="300" /> 
+<img src= "https://github.com/NickHoward1/Incident-Response-in-Sentinel-NIST-800-61-/blob/10959ae6b1ef6bdb77155da0647754de9ad061dd/Screenshot%202026-05-23%20at%2012.11.16.png" width="300" height="300"/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src= "https://github.com/NickHoward1/Incident-Response-in-Sentinel-NIST-800-61-/blob/d4e13bb19febde831fb697856c9e2dd5aa29bb78/Screenshot%202026-05-23%20at%2013.24.14.png" width="300" height="300" /> 
 </p>
 
 <h2>Potential Impossible Travel</h2>
