@@ -1,16 +1,18 @@
 <h1>Incident Response in Sentinel - NIST 800-61</h1>
 
 <h2>Objective</h2>
+To develop an understanding of Microsoft Sentinel and how to effectively navigate the platform, using KQL queries to investigate suspicious behaviour related to brute-force attacks, malicious PowerShell activity, impossible travel events, and excessive Azure resource creation or deletion. The aim of this lab was to understand where logs originate from, identify key indicators of suspicious activity, and gain practical experience with the investigation and alert triage process within a SOC environment.
+
 
 <h2>Environment</h2>
 <ul>
-  <li></li>
+  <li>Microsoft Azure, Sentinel & Defender</li>
 </ul>
 
 <h2>Tasks Completed</h2>
 <ul>
-  <li></li>
-  <li></li>
+  <li>Brute Force: Created an alert in Sentinel using the KQL query to search for a failed login attemps that were greater than or equal to 10 attempts, triggering and incident in the SIEM. We later than analysed the attack and carried out the IR lifecycle in line with NIST.</li>
+  <li> PowerShell Suspicious Web Request: Created an alert in Sentinel using a KQL query to search for a malicious command, Invoke-WebRequest to identify the logs and affected host, as well as searching to see if the command was executed. I then followed the IR lifecycle in line with NIST</li>
 </ul>
 
 <h2>Screenshots</h2>
