@@ -98,7 +98,7 @@ DeviceProcessEvents
 | order by TimeGenerated
 | project TimeGenerated, AccountName, DeviceName, FileName, ProcessCommandLine`
 
-<img src= ""/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<img src= "https://github.com/NickHoward1/Incident-Response-in-Sentinel-NIST-800-61-/blob/2bfbf15eff46759ff9d5b0547001f546ebba15cf/Screenshot%202026-05-23%20at%2014.11.51.png"/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
 <h2>Potential Impossible Travel</h2>
 
