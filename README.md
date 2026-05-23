@@ -72,7 +72,7 @@ DeviceProcessEvents
 </p>
 
 <b>Screenshot1:</b> Shows me creating the KQL query to find the PowerShell Scripts containing the "Invoke-WebRequests".<br>
-<b>Screenshot2:</b> Shows me creating the detection rule so that the incident shows up in Sentinel .<br>
+<b>Screenshot2:</b> Shows me creating the detection rule so that the incident shows up in Sentinel under Incidents .<br>
 <b>Screenshot3:</b> Shows me gathering information and compiling it into notes to then send off to the senior SOC Analyst. <b>Process:</b> `Sentinel - Threat Management - Incidents - Target Host - Assign Owner (Me) - Change Status: Active - View Full Details - Investigate - Copy & Paste Commands found into notes (See below)`
 
 <b>Detection & Analysis Section:</b> This is where you write notes on your findings. 
