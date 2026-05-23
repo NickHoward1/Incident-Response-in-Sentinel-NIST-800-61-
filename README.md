@@ -71,6 +71,35 @@ DeviceProcessEvents
 <img src= "https://github.com/NickHoward1/Incident-Response-in-Sentinel-NIST-800-61-/blob/10959ae6b1ef6bdb77155da0647754de9ad061dd/Screenshot%202026-05-23%20at%2012.11.16.png" width="300" height="300"/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src= "https://github.com/NickHoward1/Incident-Response-in-Sentinel-NIST-800-61-/blob/d4e13bb19febde831fb697856c9e2dd5aa29bb78/Screenshot%202026-05-23%20at%2013.24.14.png" width="300" height="300" /> 
 </p>
 
+<b>Screenshot1:</b> Shows me .<br>
+<b>Screenshot2:</b> Shows .<br>
+<b>Screenshot3:</b> Shows me gathering information and compiling it into notes to then send off to the senior SOC Analyst. <b>Process:</b> `Sentinel - Threat Management - Incidents - Target Host - Assign Owner (Me) - Change Status: Active - View Full Details - Investigate - Copy & Paste Commands found into notes (See below)`
+
+<b>Detection & Analysis Section:</b> This is where you write notes on your findings. 
+
+<b>Layout like so in notes</b>
+
+<b>Heading:</b>Detection & Analysis
+
+<b>Body:</b> Upon investigating the triggered incident.... (Number of event or name of host)
+
+<b>Scripts:</b> Copy and paste the scripts 
+
+<b>Commands:</b> For example (portscan.ps1) and then copy and past the URL of the that script into the web search to retrieve the raw command and paste into notes. 
+
+<b>Executed:</b> see KQL query below, if there is a result, the command was executed meaning this will need to be written in the notes and passed of to the SOC2. Copy and paste the query used in the notes as well. 
+
+ `let TargetHostname = "windows-target-1"; // Replace with the name of your target host as it shows up in the logs
+let ScriptNames = dynamic(["eicar.ps1", "portscan.ps1", "pwncrypt.ps1"]); // Add the name of the scripts that were downloaded
+DeviceProcessEvents
+| where DeviceName == TargetHostname // Comment this line out for MORE results
+| where FileName == "powershell.exe"
+| where ProcessCommandLine contains "-File" and ProcessCommandLine has_any (ScriptNames)
+| order by TimeGenerated
+| project TimeGenerated, AccountName, DeviceName, FileName, ProcessCommandLine`
+
+<img src= ""/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
 <h2>Potential Impossible Travel</h2>
 
 <h2>Excessive Resource Creation / Deletion</h2>
