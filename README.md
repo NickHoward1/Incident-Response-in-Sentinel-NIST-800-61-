@@ -27,7 +27,8 @@ To develop an understanding of Microsoft Sentinel and how to effectively navigat
 | summarize NumberOfFailures = count() by RemoteIP, ActionType, DeviceName 
 | where  NumberOfFailures >= 10`
 
-<b>Process:</b> `Microsoft Sentinel - Configuration - Analytics - Create (Scheduled Query Rule) - Fill In General - Set Rule Logic (paste query created in log analytic workspace, shown above) - Select Entity Mapping (See screenshot below) - Review & Create`
+<b>Process:</b> `Microsoft Sentinel - Configuration - Analytics - Create (Scheduled Query Rule) -  Enable the Rule -  set Mitre ATT&CK Framework Categories based on the query - Run query every 4 hours - Lookup data for last 5 hours (can define in query) - Stop running query after alert is generated == Yes - Configure Entity Mappings for the Remote IP and DeviceName -Automatically create an Incident if the rule is triggered - Group all alerts into a single Incident per 24 hours - Stop running query after alert is generated (24 hours) - Review & Create`
+
 
 <p>
 <img src= "https://github.com/NickHoward1/Incident-Response-in-Sentinel-NIST-800-61-/blob/b12acecd47cb5a35458f083a95eb1f7ad48321e2/Screenshot%202026-05-18%20at%2009.44.36.png" width="300" height="300"/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
