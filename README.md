@@ -66,7 +66,7 @@ DeviceProcessEvents
 <b>Process:</b> `Microsoft Sentinel - Configuration - Analytics - Create (Scheduled Query Rule) - Fill In General - Set Rule Logic (paste query created in log analytic workspace, shown above) - Select Entity Mapping (See screenshot below) - Review & Create`
 
 <p>
-<img src= "" width="300" height="300"/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<img src= "https://github.com/NickHoward1/Incident-Response-in-Sentinel-NIST-800-61-/blob/086e14fe01c709b7d4c2f85a56458f33ee0fc243/Screenshot%202026-05-23%20at%2012.01.27.png" width="300" height="300"/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <img src= "" width="300" height="300"/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src= "" width="300" height="300" /> 
 </p>
 
