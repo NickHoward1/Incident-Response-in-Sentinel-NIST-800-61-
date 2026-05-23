@@ -63,7 +63,8 @@ DeviceProcessEvents
 | where InitiatingProcessCommandLine contains "Invoke-WebRequest"
 | order by TimeGenerated`
 
-<b>Process:</b> `Microsoft Sentinel - Configuration - Analytics - Create (Scheduled Query Rule) - Fill In General - Set Rule Logic (paste query created in log analytic workspace, shown above) - Select Entity Mapping (See screenshot below) - Review & Create`
+<b>Process:</b> `Microsoft Sentinel - Configuration - Analytics - Create (Scheduled Query Rule) - Fill in: Name: - Description: - Enable the Rule - Use ChatGPT to set Mitre ATT&CK Framework Categories based on the query - Run query every 4 hours - Lookup data for last 24 hours (can define in query) - Stop running query after alert is generated == Yes- Configure Entity Mappings:	Account: Identifier: Name, Value: AccountName, Host: Identifier: HostName, Value: DeviceName, Process: Identifier: CommandLine, Value: ProcessCommandLine - Automatically create an Incident if the rule is triggered - Group all alerts into a single Incident per 24 hours - Stop running query after alert is generated (24 hours)`
+
 
 <p>
 <img src= "https://github.com/NickHoward1/Incident-Response-in-Sentinel-NIST-800-61-/blob/086e14fe01c709b7d4c2f85a56458f33ee0fc243/Screenshot%202026-05-23%20at%2012.01.27.png" width="300" height="300"/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
