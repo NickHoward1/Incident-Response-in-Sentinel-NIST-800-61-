@@ -128,7 +128,7 @@ SigninLogs
 
 <p>
 <img src= "https://github.com/NickHoward1/Incident-Response-in-Sentinel-NIST-800-61-/blob/22ad8328ba34a036a885a92a147e3da329b42fd7/Screenshot%202026-05-24%20at%2011.05.00.png" width="300" height="300"/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<img src= "https://github.com/NickHoward1/Incident-Response-in-Sentinel-NIST-800-61-/blob/f4fd0b2fb55173a897c36015c6ec65974803f215/Screenshot%202026-05-24%20at%2011.21.43.png" width="300" height="300"/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src= "" width="300" height="300" /> 
+<img src= "https://github.com/NickHoward1/Incident-Response-in-Sentinel-NIST-800-61-/blob/f4fd0b2fb55173a897c36015c6ec65974803f215/Screenshot%202026-05-24%20at%2011.21.43.png" width="300" height="300"/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src= "https://github.com/NickHoward1/Incident-Response-in-Sentinel-NIST-800-61-/blob/02d97b3698bc0cfe23f3506ff368aefdee7eba7e/Screenshot%202026-05-24%20at%2016.13.44.png" width="300" height="300" /> 
 </p>
 
 <b>Screenshot1:</b> Shows .<br>
