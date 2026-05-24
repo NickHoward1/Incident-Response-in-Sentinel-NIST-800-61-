@@ -50,27 +50,46 @@ In some cases I would have to create a Network Security Group Rule in Azure in r
 
 For the final step of the Incident Response you want to declare your findings, you do this by - <b>Process:</b> `Sentinel - Incidents - Search for Incident - Select Incident - View Full Details - Select Activity Log - Post Comment`
 
-<h3>What to investigate during a brute-force attack & KQL querys</h3>
+<h3>Investigate Brute-Force Attack & KQL Queries</h3>
 
 <B>Number of failed logins:</B> Was this a single failed login? or hundreds/thousands?
 
-KQL: `DeviceLogonEvents
+`DeviceLogonEvents
 | where ActionType == "LogonFailed"
 | summarize FailedAttempts = count() by RemoteIP, AccountName
 | order by FailedAttempts desc`
 
 <B>Login Successful:</B> LogonSuccess
 
-KQL: `DeviceLogonEvents
+`DeviceLogonEvents
 | where RemoteIP in ("185.156.73.169")
 | where ActionType != "LogonFailed"`
 
 <B>RDP logons:</B> Brute-force attacks commonly target: RDP (3389) SSH (22)
 
-KQL: `DeviceLogonEvents
+`DeviceLogonEvents
 | where LogonType == "RemoteInteractive"`
 
-(
+(whether remote access was attempted or achieved)
+
+<B>Geolocation anomalies</B>
+
+Check: country, ASN, VPN/proxy indicators<br>
+Questions: Is the login from a suspicious country? Is it unusual for the organisation? Is it impossible travel?
+
+<B>Multiple usernames targeted:</B> Many usernames, same source IP
+
+`DeviceLogonEvents
+| summarize Attempts=count() by RemoteIP, AccountName`
+
+<B>PowerShell Executed</B>
+
+If successful login occurred: attackers often execute PowerShell immediately<br>
+Check:DeviceProcessEvents, suspicious scripts, encoded commands, Invoke-WebRequest
+
+<B>Check for lateral movement:</B> Did the compromised host connect to other systems? Were admin shares accessed? Were new logons created?
+
+Check: DeviceNetworkEvents, additional hosts, SMB/RDP traffic
 
 
 
