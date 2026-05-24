@@ -35,7 +35,7 @@ To develop an understanding of Microsoft Sentinel and how to effectively navigat
 <img src= "https://github.com/NickHoward1/Incident-Response-in-Sentinel-NIST-800-61-/blob/166041a45f01d65f1aa4b803178fdd91e111421d/Screenshot%202026-05-18%20at%2010.20.54.png" width="300" height="300"/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src= "https://github.com/NickHoward1/Incident-Response-in-Sentinel-NIST-800-61-/blob/97345e06b44a6cab52570c6b53797a523a1ba28b/Screenshot%202026-05-18%20at%2010.44.47.png" width="300" height="300" /> 
 </p>
 
-<b>Screenshot1:</b> Shows me creating the alert using the KQL query that was tested in the log workspace analytics.<br>
+<b>Screenshot1:</b> Shows me creating the alert using the KQL query that was tested in Sentinel logs.<br>
 <b>Screenshot2:</b> Shows the alert has been triggered as an incident under Threat Management.<br>
 <b>Screenshot3:</b> Shows the investigation map breaking down all the Public IP address that attemped a Brute Force Attack, as well as the targeted Hosts. To obtain this map, I assigned the alert to myself and changed the status to active. *Important to write these note down the IP & targeted host addresses. 
 
