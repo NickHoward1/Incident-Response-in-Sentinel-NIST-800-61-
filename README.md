@@ -19,13 +19,15 @@ To develop an understanding of Microsoft Sentinel and how to effectively navigat
 
 <h2>Virtual Machine Brute Force Detection</h2>
 
-<h3>Creating an Alert Rule</h3>
+<h3>Creating a KQL Query</h3>
 
 `DeviceLogonEvents
 | where TimeGenerated >= ago(5h)
 | where ActionType == "LogonFailed"
 | summarize NumberOfFailures = count() by RemoteIP, ActionType, DeviceName 
 | where  NumberOfFailures >= 10`
+
+<h3>Creating an Alert Rule</h3>
 
 <b>Process:</b> `Microsoft Sentinel - Configuration - Analytics - Create (Scheduled Query Rule) -  Enable the Rule -  set Mitre ATT&CK Framework Categories based on the query - Run query every 4 hours - Lookup data for last 5 hours (can define in query) - Stop running query after alert is generated == Yes - Configure Entity Mappings for the Remote IP and DeviceName -Automatically create an Incident if the rule is triggered - Group all alerts into a single Incident per 24 hours - Stop running query after alert is generated (24 hours) - Review & Create`
 
@@ -102,7 +104,7 @@ Look for: new users, scheduled tasks, registry changes<br>
 
 <h2>PowerShell Suspicious Web Request</h2>
 
-<h3>Creating an Alert Rule</h3>
+<h3>Creating a KQL Query</h3>
 
 `let TargetHostname = "nicks-vm";
 DeviceProcessEvents
@@ -110,6 +112,8 @@ DeviceProcessEvents
 | where FileName == "powershell.exe"
 | where InitiatingProcessCommandLine contains "Invoke-WebRequest"
 | order by TimeGenerated`
+
+<h3>Creating an Alert Rule</h3>
 
 <b>Process:</b> `Microsoft Sentinel - Configuration - Analytics - Create (Scheduled Query Rule) - Fill in: Name: - Description: - Enable the Rule - Use ChatGPT to set Mitre ATT&CK Framework Categories based on the query - Run query every 4 hours - Lookup data for last 24 hours (can define in query) - Stop running query after alert is generated == Yes- Configure Entity Mappings:	Account: Identifier: Name, Value: AccountName, Host: Identifier: HostName, Value: DeviceName, Process: Identifier: CommandLine, Value: ProcessCommandLine - Automatically create an Incident if the rule is triggered - Group all alerts into a single Incident per 24 hours - Stop running query after alert is generated (24 hours)`
 
