@@ -124,7 +124,7 @@ SigninLogs
 | summarize PotentialImpossibleTravelInstances = count() by UserPrincipalName, UserId
 | where PotentialImpossibleTravelInstances > NumberOfDifferentLocationsAllowed`
 
-<b>Process:</b> `Microsoft Sentinel - Configuration - Analytics - Create (Scheduled Query Rule) - Fill in: Name: - Description: - Enable the Rule -  set Mitre ATT&CK Framework Categories based on the query - Run query every 4 hours - Lookup data for last 24 hours (can define in query) - Stop running query after alert is generated == Yes- Configure Entity Mappings:	Account: Identifier: AadUserId, Value: UserId, Identifier: DisplayName, Value: UserPrincipalName - Automatically create an Incident if the rule is triggered - Group all alerts into a single Incident per 24 hours - Stop running query after alert is generated (24 hours)`
+<b>Process:</b> `Microsoft Sentinel - Configuration - Analytics - Create (Scheduled Query Rule) - Fill in: Name: - Description: - Enable the Rule -  set Mitre ATT&CK Framework Categories based on the query - Run query every 4 hours - Lookup data for last 7 days (can define in query) - Stop running query after alert is generated == Yes- Configure Entity Mappings:	Account: Identifier: AadUserId, Value: UserId, Identifier: DisplayName, Value: UserPrincipalName - Automatically create an Incident if the rule is triggered - Group all alerts into a single Incident per 24 hours - Stop running query after alert is generated (24 hours)`
 
 <p>
 <img src= "https://github.com/NickHoward1/Incident-Response-in-Sentinel-NIST-800-61-/blob/22ad8328ba34a036a885a92a147e3da329b42fd7/Screenshot%202026-05-24%20at%2011.05.00.png" width="300" height="300"/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -138,7 +138,21 @@ SigninLogs
 <b>Detection & Analysis Section:</b> This is where you write notes on your findings. 
 
 <b>Prepare:</b> Document roles, responsibilities, and procedures. Ensure tools, systems, and training are in place.
- 
+
+Investigate each individual account using a KQL query to see exactly where they have been logging into and make your own judgement if they are false or true positives. For example, if the user logged into two neighboring cities within a reasonable amount of time, this would be a false positive. However if someone has logged into Thailand, then Seattle, then Thailand all within 12 hours, this would be suspect.
+
+// Investigate Potential Impossible Travel Instances
+`let TargetUserPrincipalName = "Nickhoward605@gmail.com"; // Change to your target user (UserPrincipalName)
+let TimePeriodThreshold = timespan(7d); // Change to how far back you want to look
+SigninLogs
+| where TimeGenerated > ago(TimePeriodThreshold)
+| where UserPrincipalName == TargetUserPrincipalName
+| project TimeGenerated, UserPrincipalName, City = tostring(parse_json(LocationDetails).city), State = tostring(parse_json(LocationDetails).state), Country = tostring(parse_json(LocationDetails).countryOrRegion)
+| order by TimeGenerated desc`
+
+Observe the different Users (UserPrincipalNames) logon patterns and take notes
+Example: Nickhoward605@ logged in from x and y within Z time period: suspect
+Example: arisa_lognpacific@lognpacific.com logged in from a and b within C time period: normal
 
 <h2>Excessive Resource Creation / Deletion</h2>
 
