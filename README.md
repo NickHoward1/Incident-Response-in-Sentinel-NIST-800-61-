@@ -113,6 +113,29 @@ DeviceProcessEvents
 
 <h2>Potential Impossible Travel</h2>
 
+<h3>Creating an Alert</h3>
+
+`let TimePeriodThreshold = timespan(7d); 
+let NumberOfDifferentLocationsAllowed = 2;
+SigninLogs
+| where TimeGenerated > ago(TimePeriodThreshold)
+| summarize Count = count() by UserPrincipalName, UserId, City = tostring(parse_json(LocationDetails).city), State = tostring(parse_json(LocationDetails).state), Country = tostring(parse_json(LocationDetails).countryOrRegion)
+| project UserPrincipalName, UserId, City, State, Country
+| summarize PotentialImpossibleTravelInstances = count() by UserPrincipalName, UserId
+| where PotentialImpossibleTravelInstances > NumberOfDifferentLocationsAllowed`
+
+<b>Process:</b> `Microsoft Sentinel - Configuration - Analytics - Create (Scheduled Query Rule) - Fill in: Name: - Description: - Enable the Rule -  set Mitre ATT&CK Framework Categories based on the query - Run query every 4 hours - Lookup data for last 24 hours (can define in query) - Stop running query after alert is generated == Yes- Configure Entity Mappings:	Account: Identifier: AadUserId, Value: UserId, Identifier: DisplayName, Value: UserPrincipalName - Automatically create an Incident if the rule is triggered - Group all alerts into a single Incident per 24 hours - Stop running query after alert is generated (24 hours)`
+
+<p>
+<img src= "" width="300" height="300"/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<img src= "" width="300" height="300"/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src= "" width="300" height="300" /> 
+</p>
+
+
+<b>Screenshot1:</b> Shows .<br>
+<b>Screenshot2:</b> Shows .<br>
+<b>Screenshot3:</b> Shows  .<br>
+
 <h2>Excessive Resource Creation / Deletion</h2>
 
 <h2>Outcome</h2>
