@@ -52,6 +52,8 @@ For the final step of the Incident Response you want to declare your findings, y
 
 <h3>Investigate Brute-Force Attack & KQL Queries</h3>
 
+<b>Build sequence of events to dertermine True Positive or False Positive:</b> Failed logins, Successful login, PowerShell execution, External connection, File download
+
 <B>Number of failed logins:</B> Was this a single failed login? or hundreds/thousands?
 
 `DeviceLogonEvents
@@ -91,7 +93,10 @@ Check:DeviceProcessEvents, suspicious scripts, encoded commands, Invoke-WebReque
 
 Check: DeviceNetworkEvents, additional hosts, SMB/RDP traffic
 
+<B>Investigate persistence</B>
 
+Attackers may: create accounts, install services, schedule tasks<br>
+Look for: new users, scheduled tasks, registry changes<br>
 
 
 
