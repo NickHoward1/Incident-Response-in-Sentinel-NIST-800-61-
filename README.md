@@ -131,10 +131,14 @@ SigninLogs
 <img src= "https://github.com/NickHoward1/Incident-Response-in-Sentinel-NIST-800-61-/blob/f4fd0b2fb55173a897c36015c6ec65974803f215/Screenshot%202026-05-24%20at%2011.21.43.png" width="300" height="300"/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src= "" width="300" height="300" /> 
 </p>
 
-
 <b>Screenshot1:</b> Shows .<br>
 <b>Screenshot2:</b> Shows .<br>
 <b>Screenshot3:</b> Shows  .<br>
+
+<b>Detection & Analysis Section:</b> This is where you write notes on your findings. 
+
+<b>Prepare:</b> Document roles, responsibilities, and procedures. Ensure tools, systems, and training are in place.
+ 
 
 <h2>Excessive Resource Creation / Deletion</h2>
 
