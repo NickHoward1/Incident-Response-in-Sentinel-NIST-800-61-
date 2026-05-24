@@ -29,7 +29,6 @@ To develop an understanding of Microsoft Sentinel and how to effectively navigat
 
 <b>Process:</b> `Microsoft Sentinel - Configuration - Analytics - Create (Scheduled Query Rule) -  Enable the Rule -  set Mitre ATT&CK Framework Categories based on the query - Run query every 4 hours - Lookup data for last 5 hours (can define in query) - Stop running query after alert is generated == Yes - Configure Entity Mappings for the Remote IP and DeviceName -Automatically create an Incident if the rule is triggered - Group all alerts into a single Incident per 24 hours - Stop running query after alert is generated (24 hours) - Review & Create`
 
-
 <p>
 <img src= "https://github.com/NickHoward1/Incident-Response-in-Sentinel-NIST-800-61-/blob/b12acecd47cb5a35458f083a95eb1f7ad48321e2/Screenshot%202026-05-18%20at%2009.44.36.png" width="300" height="300"/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <img src= "https://github.com/NickHoward1/Incident-Response-in-Sentinel-NIST-800-61-/blob/166041a45f01d65f1aa4b803178fdd91e111421d/Screenshot%202026-05-18%20at%2010.20.54.png" width="300" height="300"/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src= "https://github.com/NickHoward1/Incident-Response-in-Sentinel-NIST-800-61-/blob/97345e06b44a6cab52570c6b53797a523a1ba28b/Screenshot%202026-05-18%20at%2010.44.47.png" width="300" height="300" /> 
@@ -39,21 +38,43 @@ To develop an understanding of Microsoft Sentinel and how to effectively navigat
 <b>Screenshot2:</b> Shows the alert has been triggered as an incident under Threat Management.<br>
 <b>Screenshot3:</b> Shows the investigation map breaking down all the Public IP address that attemped a Brute Force Attack, as well as the targeted Hosts. To obtain this map, I assigned the alert to myself and changed the status to active. *Important to write these note down the IP & targeted host addresses. 
 
-In a real-world scenario, If the login was sucessfull, I would immediately isolate the affected host or device to help prevent lateral movement and stop any malware or ransomware that may have already been executed from spreading further across the environment. I would also initiate an anti-virus or endpoint scan as part of the containment process.
+<h3>Microsoft Defender for Endpoint</h3>
 
-Using Microsoft Defender for Endpoint, I would navigate to the affected device under the Assets/Devices section and apply device isolation and containment actions before escalating the incident to a senior SOC analyst for further investigation and remediation activities.
+In a real-world scenario, If the login was sucessfull, I would immediately isolate the affected host or device to help prevent lateral movement and stop any malware or ransomware that may have already been executed from spreading further across the environment. I would also initiate an anti-virus or endpoint scan as part of the containment process. I would navigate to the affected device under the Assets/Devices section and apply device isolation and containment actions before escalating the incident to a senior SOC analyst for further investigation and remediation activities.
 
 To see if the brute force attempt was successful use the KQL query below, if nothing shows the attempt was unsucessful. 
-
-`DeviceLogonEvents
-| where RemoteIP in ("185.156.73.169")
-| where ActionType != "LogonFailed"`
 
 In some cases I would have to create a Network Security Group Rule in Azure in response to the brute force attack. Attackers scan for open RDP's so they can carry out repeated RDP attempts on port 3389 or SSH brute force on port 22. Process to create the rule below...
 
 <b>Process:</b> `Azure - Network Security Group - Create Port Rule.`
 
 For the final step of the Incident Response you want to declare your findings, you do this by - <b>Process:</b> `Sentinel - Incidents - Search for Incident - Select Incident - View Full Details - Select Activity Log - Post Comment`
+
+<h3>What to investigate during a brute-force attack & KQL querys</h3>
+
+<B>Number of failed logins:</B> Was this a single failed login? or hundreds/thousands?
+
+KQL: `DeviceLogonEvents
+| where ActionType == "LogonFailed"
+| summarize FailedAttempts = count() by RemoteIP, AccountName
+| order by FailedAttempts desc`
+
+<B>Login Successful:</B> LogonSuccess
+
+KQL: `DeviceLogonEvents
+| where RemoteIP in ("185.156.73.169")
+| where ActionType != "LogonFailed"`
+
+<B>RDP logons:</B> Brute-force attacks commonly target: RDP (3389) SSH (22)
+
+KQL: `DeviceLogonEvents
+| where LogonType == "RemoteInteractive"`
+
+(
+
+
+
+
 
 <h2>PowerShell Suspicious Web Request</h2>
 
