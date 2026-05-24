@@ -135,7 +135,7 @@ SigninLogs
 <b>Screenshot2:</b> Shows .<br>
 <b>Screenshot3:</b> Shows  .<br>
 
-<b>Detection & Analysis Section:</b> This is where you write notes on your findings. 
+<h3>Detection & Analysis Section:</h3>
 
 <b>Prepare:</b> Document roles, responsibilities, and procedures. Ensure tools, systems, and training are in place.
 
@@ -150,9 +150,46 @@ SigninLogs
 | project TimeGenerated, UserPrincipalName, City = tostring(parse_json(LocationDetails).city), State = tostring(parse_json(LocationDetails).state), Country = tostring(parse_json(LocationDetails).countryOrRegion)
 | order by TimeGenerated desc`
 
-Observe the different Users (UserPrincipalNames) logon patterns and take notes
-Example: Nickhoward605@ logged in from x and y within Z time period: suspect
-Example: arisa_lognpacific@lognpacific.com logged in from a and b within C time period: normal
+Observe the different Users (UserPrincipalNames) logon patterns and take notes.<br>
+Example: Nickhoward605@ logged in from x and y within Z time period: suspect<br>
+Example: arisa_lognpacific@lognpacific.com logged in from a and b within C time period: normal<br>
+
+<h3>Containment, Eradication, and Recovery</h3>
+
+<b>Isolate affected systems to prevent further damage.</b>
+
+Depending on corporate policy and evidence, you might immediately disable the account in Entra ID (Azure Active Directory) and contact the user or the user’s manager to investigate.
+
+<ul>
+  <li>Example: It was determined that the alert was a TRUE POSITIVE. User ___ and logged into __ and __ within an __ day time period, which should not be possible.</li>
+  <li>The user's account was disabled and management contacted.</li>
+</ul>
+
+<b>Remove the threat and restore systems to normal.</b>
+
+<ul>
+  <li>If the logon behavior was unusual, account compromise may be possible..</li>
+  <li>Pivot to see what other activity the user has been doing. For example, you can look in the AzureActivity log:.</li>
+</ul>
+
+`AzureActivity
+| where tostring(parse_json(Claims)["http://schemas.microsoft.com/identity/claims/objectidentifier"]) == "<azure user id/guid>"`
+
+<h3>Post-Incident Activities</h3>
+
+<ul>
+  <li>Update policies and tools to prevent recurrence:geo-fencing policy within azure that prevents logins outside of certain regions. You can’t do this in our environment, but it’s something to keep in mind.</li>
+  <li>Document findings and lessons learned:Record your notes within the incident. </li>
+</ul>
+
+<h3>Closure</h3>
+
+<ul>
+  <li>Review and confirm incident resolution: Review/observe your notes for the incident. </li>
+  <li>Finalize reporting and close the case: Close out the Incident within Sentinel as a “Benign Positive” (or whatever it was in your case) </li>
+</ul>
+
+
 
 <h2>Excessive Resource Creation / Deletion</h2>
 
