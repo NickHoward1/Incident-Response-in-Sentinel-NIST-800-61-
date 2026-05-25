@@ -125,41 +125,66 @@ DeviceProcessEvents
 <img src= "https://github.com/NickHoward1/Incident-Response-in-Sentinel-NIST-800-61-/blob/10959ae6b1ef6bdb77155da0647754de9ad061dd/Screenshot%202026-05-23%20at%2012.11.16.png" width="300" height="300"/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src= "https://github.com/NickHoward1/Incident-Response-in-Sentinel-NIST-800-61-/blob/d4e13bb19febde831fb697856c9e2dd5aa29bb78/Screenshot%202026-05-23%20at%2013.24.14.png" width="300" height="300" /> 
 </p>
 
-<b>Screenshot1:</b> Shows me creating the KQL query to find the PowerShell Scripts containing the "Invoke-WebRequests".<br>
-<b>Screenshot2:</b> Shows me creating the detection rule so that the incident shows up in Sentinel under Incidents .<br>
-<b>Screenshot3:</b> Shows me gathering information and compiling it into notes to then send off to the senior SOC Analyst. <b>Process:</b> `Sentinel - Threat Management - Incidents - Target Host - Assign Owner (Me) - Change Status: Active - View Full Details - Investigate - Copy & Paste Commands found into notes (See below)`
+<b>Screenshot1:</b> Shows me creating a KQL query to detect suspicious PowerShell activity involving Invoke-WebRequest, a command commonly abused by attackers to download malicious payloads or external scripts.<br>
+<b>Screenshot2:</b> Shows me creating a detection rule using KQL queries and entity mapping within Microsoft Sentinel to generate the relevant data and investigation results required for security analysis.<br>
+<b>Screenshot3:</b> Shows me gathering relevant investigation data and compiling my findings within the activity log for escalation to senior SOC analysts. <b>Process:</b> `Sentinel - Threat Management - Incidents - Target Host - Assign Owner (Me) - Change Status: Active - View Full Details - Investigate - Copy & Paste Commands found into notes (See below)`
 
-<b>Detection & Analysis Section:</b> This is where you write notes on your findings. 
+<h3>Detection & Analysis -</h3> <b>Prepare findings in this format for submission</b><br>
+Upon investigating the triggered incident, document the affected host/device name, number of related events, and any suspicious activity identified during analysis.
 
-<b>Layout:</b> Present Investigation below...
+<b>Scripts</b> <br>
+Copy and paste the relevant PowerShell scripts, commands, or payloads associated with the alert into the investigation notes for documentation and escalation purposes.
 
-<b>Heading:</b> Detection & Analysis
+<b>Commands</b><br>
+If a suspicious script or command is identified (for example portscan.ps1), review the script contents and retrieve the raw command or payload for further analysis. Document any indicators of compromise (IOCs), suspicious URLs, encoded commands, or malicious behaviour observed.
 
-<b>Body:</b> Upon investigating the triggered incident.... (Number of event or name of host) write what you found
+<b>Execution Validation</b> 
+Use the KQL query below to determine whether the PowerShell command or script was successfully executed on the endpoint. If results are returned, this confirms execution activity and should be documented within the investigation notes before escalation to the SOC2 analyst/team.
 
-<b>Scripts:</b> Copy and paste the scripts 
-
-<b>Commands:</b> For example (portscan.ps1) and then copy and past the URL of the that script into the web search to retrieve the raw command and paste into notes. 
-
-<b>Executed:</b> see KQL query below, if there is a result, the command was executed meaning this will need to be written in the notes and passed of to the SOC2. Copy and paste the query used in the notes as well. 
-
-<b>Containment, Eradication, and Recovery:</b>  
-
-<b>Isolated:</b>  Write that the machine was isloated in MDE and a Anti Virus Scan was carried out. <b>Process:</b>  `MDE - Assets - Devices - Seach for device - Top right corner isolate & Run malware scan`
-
-<b>Close out Incident:</b> Copy and paste notes and condense them using chatGPT. Once you have done this go back to Sentinel log notes in activity log and close Incident. <b>Process:</b> `Sentinel - Threat Management - Incidents - Search for Incident - View Full Details - Activity Log - Post notes - Change Status: Closed`
+Include:
+<ul>
+  <li>affected host/device</li>
+  <li>user account</li>
+  <li>timestamps</li>
+  <li>related KQL queries used during investigation
+any identified indicators of compromise (IOCs)</li>
+</ul>
 
 
- `let TargetHostname = "windows-target-1"; // Replace with the name of your target host as it shows up in the logs
-let ScriptNames = dynamic(["eicar.ps1", "portscan.ps1", "pwncrypt.ps1"]); // Add the name of the scripts that were downloaded
+<h3>Containment, Eradication, and Recovery:</h3> 
+
+<b>Isolate</b><br>
+
+Document that the affected machine was isolated within Microsoft Defender for Endpoint and that an anti-virus/malware scan was initiated as part of the containment process.
+
+`MDE → Assets → Devices → Search for Device → Device Actions → Isolate Device & Run Antivirus Scan`
+
+This helps: prevent lateral movement, contain potential malware/ransomware, limit further attacker activity within the environment
+
+<b>Close Out Incident</b> 
+
+Once the investigation has been completed, review and condense the investigation notes into a clear incident summary before updating the Sentinel activity log and closing the incident.
+
+`Sentinel - Threat Management - Incidents - Search for Incident - View Full Details → Activity Log - Post Investigation Notes - Change Status: Closed`
+
+<h3>KQL Query – Detect Downloaded PowerShell Scripts</h3>h3>
+
+`let TargetHostname = "windows-target-1"; 
+let ScriptNames = dynamic(["eicar.ps1", "portscan.ps1", "pwncrypt.ps1"]);
+
 DeviceProcessEvents
-| where DeviceName == TargetHostname // Comment this line out for MORE results
-| where FileName == "powershell.exe"
-| where ProcessCommandLine contains "-File" and ProcessCommandLine has_any (ScriptNames)
-| order by TimeGenerated
-| project TimeGenerated, AccountName, DeviceName, FileName, ProcessCommandLine`
+| where DeviceName == TargetHostname
+| where FileName =~ "powershell.exe"
+| where ProcessCommandLine contains "-File"
+| where ProcessCommandLine has_any (ScriptNames)
+| order by Timestamp desc
+| project Timestamp, AccountName, DeviceName, FileName, ProcessCommandLine`
 
 <img src= "https://github.com/NickHoward1/Incident-Response-in-Sentinel-NIST-800-61-/blob/2bfbf15eff46759ff9d5b0547001f546ebba15cf/Screenshot%202026-05-23%20at%2014.11.51.png" width="300" height="300" /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+<h3>Malicious PowerShell Commands Used by Attackers & KQL Detection Queries</h3>
+
+Invoke-WebRequest; 
 
 
 <h2>Potential Impossible Travel</h2>
