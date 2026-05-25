@@ -315,13 +315,11 @@ SigninLogs
 <img src= "https://github.com/NickHoward1/Incident-Response-in-Sentinel-NIST-800-61-/blob/f4fd0b2fb55173a897c36015c6ec65974803f215/Screenshot%202026-05-24%20at%2011.21.43.png" width="300" height="300"/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src= "https://github.com/NickHoward1/Incident-Response-in-Sentinel-NIST-800-61-/blob/02d97b3698bc0cfe23f3506ff368aefdee7eba7e/Screenshot%202026-05-24%20at%2016.13.44.png" width="300" height="300" /> 
 </p>
 
-<b>Screenshot1:</b> Shows .<br>
+<b>Screenshot1:</b> Shows me creating a KQL query in Sentinel log to determine Impossible Travel.<br>
 
-<b>Screenshot2:</b> Shows .<br>
+<b>Screenshot2:</b> Shows me creating a detection rule in Sentinal Analytics using the KQL query created aswell as entity mapping to generate the correct data for analysis and forensics.<br>
 
-<b>Screenshot3:</b> Shows  .<br>
-
-<h3>Detection & Analysis Section</h3>
+<b>Screenshot3:</b> </h3>
 
 <b>Prepare:</b> Document roles, responsibilities, and procedures. Ensure tools, systems, and training are in place.
 
