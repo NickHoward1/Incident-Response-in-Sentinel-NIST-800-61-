@@ -36,17 +36,19 @@ To develop an understanding of Microsoft Sentinel and how to effectively navigat
 <img src= "https://github.com/NickHoward1/Incident-Response-in-Sentinel-NIST-800-61-/blob/166041a45f01d65f1aa4b803178fdd91e111421d/Screenshot%202026-05-18%20at%2010.20.54.png" width="300" height="300"/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src= "https://github.com/NickHoward1/Incident-Response-in-Sentinel-NIST-800-61-/blob/97345e06b44a6cab52570c6b53797a523a1ba28b/Screenshot%202026-05-18%20at%2010.44.47.png" width="300" height="300" /> 
 </p>
 
-<b>Screenshot1:</b> Shows the creation of the alert using a specific KQL query for Brute Force Attacks.<br>
-<b>Screenshot2:</b> Shows the alert has been triggered as an incident under Threat Management.<br>
+<b>Screenshot1:</b> Shows the creation of the alert using a specific KQL query for brute-force and entity mapping to generate the results.<br>
+<b>Screenshot2:</b> Shows the alert has been triggered as an incident in Sentinel, assigning the task to myself and setting the status to active to work on the incident.<br>
 <b>Screenshot3:</b> Shows the investigation map identifying the public IP addresses involved in the brute-force attack, along with the targeted hosts/devices. To generate the investigation graph, I assigned the incident to myself and changed the status to Active within Microsoft Sentinel. It is important during the investigation process to document the malicious IP addresses and affected hosts for further analysis, containment, and escalation activities.
 
 <h3>Microsoft Defender for Endpoint</h3>
 
-In a real-world scenario, If the login was sucessfull, I would immediately isolate the affected host or device to help prevent lateral movement and stop any malware or ransomware that may have already been executed from spreading further across the environment. I would also initiate an anti-virus or endpoint scan as part of the containment process. I would navigate to the affected device under the Assets/Devices section and apply device isolation and containment actions before escalating the incident to a senior SOC analyst for further investigation and remediation activities.
+In a real-world scenario, if the login attempt was successful, I would immediately isolate the affected host or device to help prevent lateral movement and stop any malware or ransomware that may have already been executed from spreading further across the environment. I would also initiate an anti-virus or endpoint scan as part of the containment process.
 
-To see if the brute force attempt was successful use the KQL query below, if nothing shows the attempt was unsucessful. 
+Using Microsoft Defender for Endpoint, I would navigate to the affected device under the Assets/Devices section and apply device isolation and containment actions before escalating the incident to a senior SOC analyst for further investigation and remediation activities.
 
-In some cases I would have to create a Network Security Group Rule in Azure in response to the brute force attack. Attackers scan for open RDP's so they can carry out repeated RDP attempts on port 3389 or SSH brute force on port 22. Process to create the rule below...
+To determine whether the brute-force attempt was successful, I used the KQL query below. If no successful logon events are returned, this indicates the brute-force attempt was unsuccessful.
+
+In some cases, it may also be necessary to create a Network Security Group (NSG) rule within Microsoft Azure in response to the brute-force activity. Attackers commonly scan for exposed RDP services on port 3389 or SSH services on port 22 in order to carry out repeated authentication attempts against publicly accessible systems.
 
 <b>Process:</b> `Azure - Network Security Group - Create Port Rule.`
 
