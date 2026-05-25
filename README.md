@@ -316,7 +316,9 @@ SigninLogs
 </p>
 
 <b>Screenshot1:</b> Shows .<br>
+
 <b>Screenshot2:</b> Shows .<br>
+
 <b>Screenshot3:</b> Shows  .<br>
 
 <h3>Detection & Analysis Section</h3>
@@ -336,7 +338,7 @@ SigninLogs
 
 Observe the different Users (UserPrincipalNames) logon patterns and take notes.<br>
 Example: Nickhoward605@ logged in from x and y within Z time period: suspect<br>
-Example: arisa_lognpacific@lognpacific.com logged in from a and b within C time period: normal<br>
+Example: arisa_lognpacific@ logged in from a and b within C time period: normal<br>
 
 <h3>Containment, Eradication, and Recovery</h3>
 
@@ -373,6 +375,78 @@ Depending on corporate policy and evidence, you might immediately disable the ac
   <li>Finalize reporting and close the case: Close out the Incident within Sentinel as a “Benign Positive” (or whatever it was in your case) </li>
 </ul>
 
+<h3>Information and Queries for Impossible Travel</h3>
+
+<b>Which stage of an attack does it belong to?</b>
+
+<b>Initial Access or Credential Access / Valid Account Abuse:</b> Attackers have stolen credentials, logging into cloud services or abusing legitimate accounts
+
+<b>Typical attack flow:</b> <br>
+Credentials stolen: via phishing, malware, infostealers, password reuse<br>
+Attacker logs into cloud account: example; Microsoft 365, Azure, VPN, Entra ID<br>
+Impossible travel alert triggers: bevcause; attacker location differs from legitimate user, sign-ins occur too quickly between regions<br>
+Post-compromise activity begins: Attackers access email, create inbox rules, escalate privileges, move laterally, exfiltrate data
+
+<b>Why impossible travel alerts happen a lot</b>
+
+False Positives: VPN usage, mobile networks, cloud proxies, Microsoft services routing traffic, business travel, remote workers
+
+<b>Important for the SOC analysts to validate:</b> IP reputation, MFA status, user behaviour, device trust, sign-in patterns.
+
+<b>What makes it suspicious?</b><br>
+SOC analysts look for: unfamiliar countries, TOR/proxy IPs, impossible timing, MFA failures, new devices, risky sign-ins, suspicious user-agent strings
+
+<b>What a SOC analyst would investigate</b><br>
+<ul>
+  <li>Was MFA successful.</li>
+  <li>Was the device known/trusted?: Managed corporate device? or unknown browser/device?</li>
+  <li>Were there multiple failed logins first?: Could indicate brute force/password spray.
+ </li>
+  <li>What happened after login?: mailbox rule creation, PowerShell activity, privilege escalation, data downloads, OAuth consent grants</li>
+
+</ul>
+
+<h3>Process & KQL Queries</h3>
+
+`SigninLogs
+| where ResultType == 0
+| project TimeGenerated, UserPrincipalName, IPAddress, Location
+| order by UserPrincipalName asc, TimeGenerated desc`
+
+This looks for the same user signing in from different countries within a short timeframe. This helps you manually review: sign-in locations timestamps and IP addresses.
+
+`or`
+
+`SigninLogs
+| where ResultType == 0
+| project UserPrincipalName, TimeGenerated, IPAddress, Country=tostring(LocationDetails.countryOrRegion)
+| sort by UserPrincipalName asc, TimeGenerated asc
+| serialize
+| extend PreviousCountry = prev(Country), PreviousTime = prev(TimeGenerated), PreviousUser = prev(UserPrincipalName)
+| where UserPrincipalName == PreviousUser
+| where Country != PreviousCountry
+| extend TimeDifference = datetime_diff("minute", TimeGenerated, PreviousTime)
+| where TimeDifference < 60
+| project UserPrincipalName, PreviousCountry, Country, PreviousTime, TimeGenerated, TimeDifference, IPAddress`
+
+This query compares consecutive logins from different countries. It checks: same user, different countries, within less than 60 minutes
+
+<b>Important SOC validation steps</b>
+
+Impossible travel alerts produce many false positives. After detecting this activity, analysts should check:<br>
+`SigninLogs
+| project UserPrincipalName, MFAResult=tostring(AuthenticationRequirement)`
+
+Device information: Managed device, compliant device, new browser/device
+IP reputation: Investigate: TOR exit nodes, VPN providers, malicious IP reputation
+
+<b>Successful vs failed sign-ins</b>
+
+`SigninLogs
+| summarize count() by ResultType
+Look for post-compromise activity`
+
+If login succeeded: investigate: mailbox rule creation PowerShell, OAuth grants, file downloads, privilege escalation
 
 
 <h2>Excessive Resource Creation / Deletion</h2>
