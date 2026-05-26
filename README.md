@@ -479,7 +479,7 @@ ResourceCreations
 <b>Process:</b> `Microsoft Sentinel - Configuration - Analytics - Create (Scheduled Query Rule) - Fill in: Name: - Description: - Enable the Rule -  set Mitre ATT&CK Framework Categories based on the query - Run query every 4 hours - Lookup data for last 7 days (can define in query) - Stop running query after alert is generated == Yes- Configure Entity Mappings:	Account: Identifier: SID, Value: ObjectIdentifier, IP, Identifier: Address Value: CallerIPaddress - Automatically create an Incident if the rule is triggered - Group all alerts into a single Incident per 24 hours - Stop running query after alert is generated (24 hours)`
 
 <p>
-<img src= "" width="300" height="300"/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<img src= "https://github.com/NickHoward1/Incident-Response-in-Sentinel-NIST-800-61-/blob/cc8e45ccc462e0d3d31e7c153784d3faa04de5e2/Screenshot%202026-05-26%20at%2010.03.32.png" width="300" height="300"/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <img src= "" width="300" height="300"/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src= "" width="300" height="300" /> 
 </p>
 
