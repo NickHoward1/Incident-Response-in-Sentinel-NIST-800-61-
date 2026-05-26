@@ -480,7 +480,7 @@ ResourceCreations
 
 <p>
 <img src= "https://github.com/NickHoward1/Incident-Response-in-Sentinel-NIST-800-61-/blob/cc8e45ccc462e0d3d31e7c153784d3faa04de5e2/Screenshot%202026-05-26%20at%2010.03.32.png" width="300" height="300"/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<img src= "" width="300" height="300"/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src= "" width="300" height="300" /> 
+<img src= "https://github.com/NickHoward1/Incident-Response-in-Sentinel-NIST-800-61-/blob/b686233278c209b94c3bff3908710c17024f3f9d/Screenshot%202026-05-26%20at%2010.08.53.png" width="300" height="300"/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src= "" width="300" height="300" /> 
 </p>
 
 <b>Screenshot1:</b> .<br>
