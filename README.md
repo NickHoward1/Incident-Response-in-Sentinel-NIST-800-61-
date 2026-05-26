@@ -449,4 +449,44 @@ If login succeeded: investigate: mailbox rule creation PowerShell, OAuth grants,
 
 <h2>Excessive Resource Creation / Deletion</h2>
 
+<h3>Creating a KQL Query</h3>
+
+`let ResourceCreations = AzureActivity
+    | extend ClaimsJson = parse_json(Claims)
+    | extend ObjectIdentifier = tostring(ClaimsJson["http://schemas.microsoft.com/identity/claims/objectidentifier"])
+    | where OperationNameValue !startswith "MICROSOFT.SECURITYINSIGHTS/ALERTRULES" and OperationNameValue !startswith "MICROSOFT.SECURITYINSIGHTS/INCIDENTS"
+    | where OperationNameValue endswith "WRITE" and ActivityStatusValue == "Success"
+    | summarize NumberOfResourceCreations = count() by Caller, ObjectIdentifier, CallerIpAddress;
+let ResourceDeletions = AzureActivity
+    | extend ClaimsJson = parse_json(Claims)
+    | extend ObjectIdentifier = tostring(ClaimsJson["http://schemas.microsoft.com/identity/claims/objectidentifier"])
+    | where OperationNameValue !startswith "MICROSOFT.SECURITYINSIGHTS/ALERTRULES" and OperationNameValue !startswith "MICROSOFT.SECURITYINSIGHTS/INCIDENTS"
+    | where OperationNameValue endswith "DELETE" and ActivityStatusValue == "Success" 
+    | summarize NumberOfResourceDeletions = count() by Caller, ObjectIdentifier, CallerIpAddress;
+ResourceCreations
+| join kind=fullouter ResourceDeletions on ObjectIdentifier, Caller, CallerIpAddress
+| project
+    ObjectIdentifier,
+    Caller,
+    CallerIpAddress,
+    NumberOfResourceCreations,
+    NumberOfResourceDeletions
+| where NumberOfResourceCreations >= 5 or NumberOfResourceDeletions >= 5
+| order by NumberOfResourceCreations, NumberOfResourceDeletions`
+
+<h3>Creating an Alert</h3>
+
+<b>Process:</b> `Microsoft Sentinel - Configuration - Analytics - Create (Scheduled Query Rule) - Fill in: Name: - Description: - Enable the Rule -  set Mitre ATT&CK Framework Categories based on the query - Run query every 4 hours - Lookup data for last 7 days (can define in query) - Stop running query after alert is generated == Yes- Configure Entity Mappings:	Account: Identifier: SID, Value: ObjectIdentifier, IP, Identifier: Address Value: CallerIPaddress - Automatically create an Incident if the rule is triggered - Group all alerts into a single Incident per 24 hours - Stop running query after alert is generated (24 hours)`
+
+<p>
+<img src= "" width="300" height="300"/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<img src= "" width="300" height="300"/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src= "" width="300" height="300" /> 
+</p>
+
+<b>Screenshot1:</b> .<br>
+
+<b>Screenshot2:</b> .<br>
+
+<b>Screenshot3:</b> </h3>
+
 <h2>Outcome</h2>
