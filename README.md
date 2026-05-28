@@ -11,8 +11,14 @@ To develop an understanding of Microsoft Sentinel and how to effectively navigat
 
 <h2>Tasks Completed</h2>
 <ul>
-  <li>Brute Force: Created an alert in Sentinel using the KQL query to search for a failed login attemps that were greater than or equal to 10 attempts, triggering and incident in the SIEM. We later than analysed the attack and carried out the IR lifecycle in line with NIST.</li>
-  <li> PowerShell Suspicious Web Request: Created an alert in Sentinel using a KQL query to search for a malicious command, Invoke-WebRequest to identify the logs and affected host, as well as searching to see if the command was executed. I then followed the IR lifecycle in line with NIST</li>
+  <li>Brute Force: Created an alert in Sentinel using the KQL query to search for a failed login attemps that were greater than or equal to 10 attempts, triggering and incident in the SIEM. I then analysed the attack and carried out the IR lifecycle in line with NIST.</li>
+  
+  <li> PowerShell Suspicious Web Request: Created an alert in Sentinel using a KQL query to search for a malicious command, Invoke-WebRequest to identify the logs and affected host, as well as searching to see if the command was executed, I then analysed the attack and carried out the IR lifecycle in line with NIST</li>
+  
+  <li> Potential Impossible Travel: Created an alert in Sentinel using a KQL query which will trigger an incident if a user log into more than 1 location within a given time period. I then analysed the attack and carried out the IR lifecycle in line with NIST</li>
+   
+  <li> Excessive Azure resource creation or deletion: Created an alert in Sentinel using a KQL query which triggers an Incident if 10 or more resources have been created or deleted, aswell as creating a KQL query to search the activity of a single user. I then analysed the attack and carried out the IR lifecycle in line with NIST</li>
+
 </ul>
 
 <h2>Screenshots</h2>
@@ -478,15 +484,119 @@ ResourceCreations
 
 <b>Process:</b> `Microsoft Sentinel - Configuration - Analytics - Create (Scheduled Query Rule) - Fill in: Name: - Description: - Enable the Rule -  set Mitre ATT&CK Framework Categories based on the query - Run query every 4 hours - Lookup data for last 7 days (can define in query) - Stop running query after alert is generated == Yes- Configure Entity Mappings:	Account: Identifier: SID, Value: ObjectIdentifier, IP, Identifier: Address Value: CallerIPaddress - Automatically create an Incident if the rule is triggered - Group all alerts into a single Incident per 24 hours - Stop running query after alert is generated (24 hours)`
 
-<p>
-<img src= "https://github.com/NickHoward1/Incident-Response-in-Sentinel-NIST-800-61-/blob/cc8e45ccc462e0d3d31e7c153784d3faa04de5e2/Screenshot%202026-05-26%20at%2010.03.32.png" width="300" height="300"/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<img src= "https://github.com/NickHoward1/Incident-Response-in-Sentinel-NIST-800-61-/blob/b686233278c209b94c3bff3908710c17024f3f9d/Screenshot%202026-05-26%20at%2010.08.53.png" width="300" height="300"/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src= "" width="300" height="300" /> 
-</p>
+<h3>Preparation</h3>
 
-<b>Screenshot1:</b> .<br>
+Document roles, responsibilities, and procedures.
+Ensure tools, systems, and training are in place.
 
-<b>Screenshot2:</b> .<br>
+<h3>Detection and Analysis</h3>
 
-<b>Screenshot3:</b> </h3>
+<b>Identify and validate the incident</b>
 
-<h2>Outcome</h2>
+Observe the incident and assign it to yourself, set the status to Active. Investigate the Incident by Actions → Investigate (sometimes takes time for entities to appear)
+
+<b>Gather relevant evidence and assess impact</b>
+
+Take note of any associated accounts and if they were involved in any other incidents. Investigate each individual account using a KQL query within Log Analytics to see exactly what they have been creating or deleting. Take note if it looks different from unusual behavior. This could be literally anything. 
+
+KQL Analysis<br>
+// Highlight to show query<br> 
+// Put your long username here, or any other user you want to track<br>
+`let UserInQuestion = "@lognpacific.com";<br>
+AzureActivity
+| where Caller contains UserInQuestion
+| where OperationNameValue !startswith "MICROSOFT.SECURITYINSIGHTS/ALERTRULES" and OperationNameValue !startswith "MICROSOFT.SECURITYINSIGHTS/INCIDENTS"
+| where OperationNameValue endswith "WRITE" or OperationNameValue endswith "DELETE"
+| where ActivityStatusValue == "Success"
+| project TimeGenerated, Caller,  CallerIpAddress, OperationNameValue, ResourceGroup`
+
+<h3>Containment, Eradication, and Recovery</h3>
+
+<b>Isolate affected systems to prevent further damage</b>
+
+In real life, depending on corporate policy and evidence, you might immediately disable the account in Entra ID (Azure Active Directory) and contact yours or the user’s manager.
+Put in your notes (either or):
+
+Example:<br>
+TRUE POSITIVE: The alert has been confirmed as a true positive. Investigation revealed that the user [Insert User Name] was creating an excessive number of virtual machines in an unusual pattern. This activity deviates from typical usage behavior and may indicate unauthorized or malicious intent, such as resource abuse, unauthorized automation, or a compromised account. Immediate steps should be taken to assess the user's access permissions, audit recent activities, and mitigate any potential risks to the environment.
+
+Example:<br>
+FALSE POSITIVE: The alert has been reviewed and determined to be a false positive. The user [Insert User Name] was found to be creating multiple virtual machines as part of a legitimate activity. The behavior aligns with their role and responsibilities, such as provisioning resources for a project or scaling an application. No malicious intent or unauthorized activity was identified. However, it is recommended to continue monitoring to ensure consistent alignment with organizational policies and resource usage guidelines.
+Remove the threat and restore systems to normal.
+
+Remove the threat by disabling the users account and escalating to management. If found to be a false positive, simply document it TRUE POSITIVE: The user's account was disabled and management contacted. FALSE POSITIVE: Management has verified the activities to be related to a routine exercise
+
+<h3>Post-Incident Activities</h3>
+
+Document findings and lessons learned. Record your notes within the incident. Update policies and tools to prevent recurrence.
+
+<h3>Closure</h3>
+
+Review and confirm incident resolution: Review/observe your notes for the incident.<br>
+Finalize reporting and close the case: Close out the Incident within Sentinel as a “True Positive” (or whatever it was in your case)
+
+<h3>What you should look for in the logs</h3>
+
+<b>Large volume of operations:</b> How many resources were created/deleted? Was it abnormal? Did it happen rapidly?
+
+<b>Which account performed the actions?:</b> Look for: admin accounts, service principals, automation accounts, unusual users
+
+<b>Source IP address:</b> unfamiliar country? VPN/TOR?, malicious IP?, unusual location?
+
+<b>Time of activity:</b> outside business hours? overnight? unusual timing?
+
+<b>Type of resources affected:</b> VMs?, storage accounts?, NSGs?, key vaults?, identity resources?
+
+<b>Successful vs failed operations:</b>  Failed operations can indicate: attacker testing permissions, reconnaissance, privilege escalation attempts
+
+<b>Sudden spikes:</b> 100 VMs created, mass deletion, repeated deployments
+
+<b>Correlate with identity activity:</b> impossible travel, suspicious sign-ins, MFA failures, new locations
+
+<h3>Useful KQL Queries</h3>
+
+<b>Excessive Resource Deletion:</b> Detects large amounts of successful deletion activity and possible destructive behaviour
+
+`let resource_threshold = 10;
+let timeframe = 30m;
+AzureActivity
+| where TimeGenerated > ago(timeframe)
+| where OperationNameValue endswith "DELETE"
+| where ActivityStatusValue == "Success"
+| summarize DeletedResources = count() by Caller, CallerIpAddress
+| where DeletedResources > resource_threshold
+| order by DeletedResources desc`
+
+<b>Excessive Creation Deletion:</b> what this may indicate - crypto mining, attacker infrastructure, automation abuse, persistence
+
+`AzureActivity
+| where Caller == "user@company.com"
+| project TimeGenerated,
+          Caller,
+          CallerIpAddress,
+          OperationNameValue,
+          ResourceGroup,
+          ResourceProviderValue,
+          ActivityStatusValue
+| order by TimeGenerated desc`
+
+<b>Check Suspicious Countries / Sign-ins</b>
+
+`SigninLogs
+| project TimeGenerated,
+          UserPrincipalName,
+          IPAddress,
+          Location,
+          ResultType
+| order by TimeGenerated desc`
+
+<b>Correlate Resource Activity & Sign-ins</b>
+
+`AzureActivity
+| where OperationNameValue contains "Delete"
+| join kind=inner (
+    SigninLogs
+    | project UserPrincipalName, IPAddress, Location, TimeGenerated
+) on $left.Caller == $right.UserPrincipalName`
+
+
